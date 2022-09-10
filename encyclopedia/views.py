@@ -9,10 +9,10 @@ def index(request):
         "entries": util.list_entries()
     })
 
-def entry(request, title): 
+def entry(request, entry): 
     markdowner = Markdown()
-    page = util.get_entry(title)
+    page = util.get_entry(entry)
     return render(request, "encyclopedia/entry.html", {
         "page": markdowner.convert(page), 
-        "title": title
+        "entry": entry
     })
