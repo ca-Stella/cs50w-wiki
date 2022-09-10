@@ -12,6 +12,10 @@ def index(request):
 def entry(request, entry): 
     markdowner = Markdown()
     page = util.get_entry(entry)
+    if page is None: 
+        return render(request, "encyclopedia/dne_error.html", {
+            "entry": entry
+        })
     return render(request, "encyclopedia/entry.html", {
         "page": markdowner.convert(page), 
         "entry": entry
