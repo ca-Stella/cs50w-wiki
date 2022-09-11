@@ -5,5 +5,8 @@
 {% endblock %}
 
 {% block body %}
-    
+    <h2>Search results for {{ search }}</h2>
+    {% for match in matches %}
+        <li><a href="wiki/{{ match }}">{{ match }}</a> </li>
+    {% endfor %}
 {% endblock %}

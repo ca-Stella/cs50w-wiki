@@ -35,18 +35,17 @@ def entry(request, entry):
 
 
 def search(request):
-    markdowner = Markdown()
     search = request.GET.get('q','')
     entries = util.list_entries()
     page = util.get_entry(search)
     if page is None:
         matches = []
         for entry in entries: 
-            if search in entry: 
+            if search.lower() in entry.lower(): 
                 matches.append(entry)
         return render(request, "encyclopedia/search.html", {
             "matches": matches,
             "search": search
         })
     else: 
-        return HTTPResponseRedirect(reverse("entry"), kwargs={"entry": search, "page": markdowner.convert(page)})
+        return HttpResponseRedirect(reverse("entry"), kwargs={"entry":search})
