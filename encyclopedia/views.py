@@ -1,8 +1,12 @@
+from http.client import HTTPResponse
 from django.shortcuts import render
 
 from . import util
-
+from django import forms
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 from markdown2 import Markdown
+
 
 def index(request):
     # render index.html by passing in list of entries
@@ -28,3 +32,21 @@ def entry(request, entry):
         "page": markdowner.convert(page), 
         "entry": entry
     })
+
+
+def search(request):
+    markdowner = Markdown()
+    search = request.GET.get('q','')
+    entries = util.list_entries()
+    page = util.get_entry(search)
+    if page is None:
+        matches = []
+        for entry in entries: 
+            if search in entry: 
+                matches.append(entry)
+        return render(request, "encyclopedia/search.html", {
+            "matches": matches,
+            "search": search
+        })
+    else: 
+        return HTTPResponseRedirect(reverse("entry"), kwargs={"entry": search, "page": markdowner.convert(page)})
