@@ -56,9 +56,22 @@ def search(request):
 
 def new(request):
     if request.method == "POST":
+
+        # Take in data submitted and save as form
         form = NewEntryForm(request.POST)
+
+        # Check if form data is valid
         if form.is_valid(): 
-            entry = form.cleaned_data["title"]
+
+            title = form.cleaned_data["title"]
+
+            content = form.cleaned_data["content"]
+
+            # Save the entry
+            util.save_entry(title, content)
+
+            return HttpResponseRedirect(reverse("index"))
+
     # render new.html
     return render(request, "encyclopedia/new.html", {
         "form": NewEntryForm()
