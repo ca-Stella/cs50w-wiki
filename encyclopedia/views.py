@@ -9,8 +9,11 @@ from markdown2 import Markdown
 from django import forms
 
 class NewEntryForm(forms.Form):
-    title = forms.CharField(label='Title', widget=forms.TextInput(attrs={'name':'title'}))
-    content = forms.CharField(widget=forms.Textarea(attrs={'name': 'content', 'style': 'height: 8em;'}))
+    title = forms.CharField(label='Title', widget=forms.TextInput(attrs={'name':'title', 'style': 'width: 60%; text-align: left;'}))
+    content = forms.CharField(widget=forms.Textarea(attrs={'name': 'description', 'style': 'height: 8em; width: 60%;'}))
+
+class EditForm(forms.Form):
+    content = forms.CharField(widget=forms.Textarea(attrs={'name': 'content'}))
 
 def index(request):
     # render index.html by passing in list of entries
@@ -82,3 +85,6 @@ def new(request):
     return render(request, "encyclopedia/new.html", {
         "form": NewEntryForm()
     })
+
+def edit(request):
+    pass
