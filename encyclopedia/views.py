@@ -9,8 +9,8 @@ from markdown2 import Markdown
 from django import forms
 
 class NewEntryForm(forms.Form):
-    title = forms.CharField(label="Title")
-    description = forms.CharField(widget=forms.Textarea)
+    title = forms.CharField(label='Title', widget=forms.TextInput(attrs={'name':'title'}))
+    content = forms.CharField(widget=forms.Textarea(attrs={'name': 'content', 'style': 'height: 8em;'}))
 
 def index(request):
     # render index.html by passing in list of entries
