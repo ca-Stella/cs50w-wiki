@@ -65,13 +65,19 @@ def new(request):
 
             title = form.cleaned_data["title"]
 
+            if title in util.list_entries():
+                return render(request, "encyclopedia/already_exists_error.html", {
+                    "title": title
+                })
+
             content = form.cleaned_data["content"]
 
             # Save the entry
-            util.save_entry(title, content)
+            saved = util.save_entry(title, content)
 
             return HttpResponseRedirect(reverse("index"))
 
+            
     # render new.html
     return render(request, "encyclopedia/new.html", {
         "form": NewEntryForm()
