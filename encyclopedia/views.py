@@ -49,3 +49,7 @@ def search(request):
         })
     else: 
         return HttpResponseRedirect(reverse("entry", kwargs={"entry":search}))
+
+def new(request):
+    # render new.html
+    return render(request, "encyclopedia/new.html")
