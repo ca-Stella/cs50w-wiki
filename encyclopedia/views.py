@@ -6,7 +6,11 @@ from django import forms
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from markdown2 import Markdown
+from django import forms
 
+class NewEntryForm(forms.Form):
+    title = forms.CharField(label="Title")
+    description = forms.CharField(widget=forms.Textarea)
 
 def index(request):
     # render index.html by passing in list of entries
@@ -51,5 +55,11 @@ def search(request):
         return HttpResponseRedirect(reverse("entry", kwargs={"entry":search}))
 
 def new(request):
+    if request.method == "POST":
+        form = NewEntryForm(request.POST)
+        if form.is_valid(): 
+            entry = form.cleaned_data["title"]
     # render new.html
-    return render(request, "encyclopedia/new.html")
+    return render(request, "encyclopedia/new.html", {
+        "form": NewEntryForm()
+    })
