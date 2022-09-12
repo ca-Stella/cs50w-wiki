@@ -48,4 +48,4 @@ def search(request):
             "search": search
         })
     else: 
-        return HttpResponseRedirect(reverse("entry"), kwargs={"entry":search})
+        return HttpResponseRedirect(reverse("entry", kwargs={"entry":search}))
