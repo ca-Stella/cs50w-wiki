@@ -87,4 +87,27 @@ def new(request):
     })
 
 def edit(request):
-    pass
+    page = util.get_entry(entry)
+    markdowner = Markdown()
+
+    if request.method == "POST":
+
+        # Take in data submitted and save as form
+        form = EditForm(request.POST)
+
+        # Check if form data is valid
+        if form.is_valid(): 
+
+            content = form.cleaned_data["content"]
+
+            # Save the entry
+            saved = util.save_entry(page, content)
+
+            return HttpResponseRedirect(reverse("entry", args=[entry]))
+
+    # render edit.html
+    return render(request, "encyclopedia/edit.html", {
+        "form": EditForm(),
+        "entry": entry, 
+        "page": markdowner.convert(page)
+    })
