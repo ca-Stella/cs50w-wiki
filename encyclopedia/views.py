@@ -86,7 +86,7 @@ def new(request):
         "form": NewEntryForm()
     })
 
-def edit(request):
+def edit(request, entry):
     page = util.get_entry(entry)
     markdowner = Markdown()
 
@@ -101,7 +101,7 @@ def edit(request):
             content = form.cleaned_data["content"]
 
             # Save the entry
-            saved = util.save_entry(page, content)
+            saved = util.save_entry(entry, content)
 
             return HttpResponseRedirect(reverse("entry", args=[entry]))
 
