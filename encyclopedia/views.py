@@ -1,4 +1,5 @@
 from http.client import HTTPResponse
+from xml.sax.handler import DTDHandler
 from django.shortcuts import render
 
 from . import util
@@ -7,6 +8,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from markdown2 import Markdown
 from django import forms
+import random
 
 class NewEntryForm(forms.Form):
     title = forms.CharField(label='Title', widget=forms.TextInput(attrs={'name':'title', 'style': 'width: 60%; text-align: left;'}))
@@ -110,4 +112,16 @@ def edit(request, entry):
         "form": EditForm(),
         "entry": entry, 
         "page": markdowner.convert(page)
+    })
+
+def random(request):
+    markdowner = Markdown()
+
+    num = random.randint(0, len(util.list_entries))
+    entry = util.list_entries[num]
+    page = util.get_entry(entry)
+
+    return render(request, "encyclopedia/entry.html", {
+        "page": markdowner.convert(page), 
+        "entry": entry
     })
