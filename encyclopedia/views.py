@@ -114,10 +114,10 @@ def edit(request, entry):
         "page": markdowner.convert(page)
     })
 
-def random(request):
+def randompg(request):
     markdowner = Markdown()
 
-    num = random.randint(0, len(util.list_entries))
+    num = random.randint(0, len(util.list_entries()))
     entry = util.list_entries[num]
     page = util.get_entry(entry)
 
