@@ -117,8 +117,8 @@ def edit(request, entry):
 def randompg(request):
     markdowner = Markdown()
 
-    num = random.randint(0, len(util.list_entries()))
-    entry = util.list_entries[num]
+    num = random.randint(0, len(util.list_entries())- 1)
+    entry = util.list_entries()[num]
     page = util.get_entry(entry)
 
     return render(request, "encyclopedia/entry.html", {
