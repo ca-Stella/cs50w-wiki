@@ -5,11 +5,11 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ entry }}</h1>
-    <form action="/wiki/{{ entry }}/edit" method="post">
+    <h1>{{ title }}</h1>
+    <form action="/wiki/{{ title }}/edit" method="post">
         {% csrf_token %}
         <textarea name="content" rows="5" cols="10">{{ page }}</textarea>
         <input type="submit" value="Save">
     </form>
-    <a href="{% url 'entry' entry %}">Home</a>
+    <a href="{% url 'title' title %}">Home</a>
 {% endblock %}

@@ -23,23 +23,23 @@ def index(request):
         "entries": util.list_entries()
     })
 
-def entry(request, entry): 
+def entry(request, title): 
     # Load markdown for convertion to HTML
     markdowner = Markdown()
 
     # Call the get_entry in util.py to load the markdown file
-    page = util.get_entry(entry)
+    page = util.get_entry(title)
 
     # If markdown page does not exist, render error page
     if page is None: 
         return render(request, "encyclopedia/dne_error.html", {
-            "entry": entry
+            "title": title
         })
     
     # If page exists, render the page
     return render(request, "encyclopedia/entry.html", {
         "page": markdowner.convert(page), 
-        "entry": entry
+        "title": title
     })
 
 
@@ -57,7 +57,7 @@ def search(request):
             "search": search
         })
     else: 
-        return HttpResponseRedirect(reverse("entry", kwargs={"entry":search}))
+        return HttpResponseRedirect(reverse("entry", kwargs={"title":search}))
 
 def new(request):
     if request.method == "POST":
@@ -69,18 +69,17 @@ def new(request):
         if form.is_valid(): 
 
             title = form.cleaned_data["title"]
+            content = form.cleaned_data["content"]
 
             if title in util.list_entries():
                 return render(request, "encyclopedia/already_exists_error.html", {
                     "title": title
                 })
 
-            content = form.cleaned_data["content"]
-
             # Save the entry
-            saved = util.save_entry(title, content)
+            util.save_entry(title, content)
 
-            return HttpResponseRedirect(reverse("index"))
+            return HttpResponseRedirect(reverse("entry"), kwargs={"title":title})
 
             
     # render new.html
@@ -88,8 +87,8 @@ def new(request):
         "form": NewEntryForm()
     })
 
-def edit(request, entry):
-    page = util.get_entry(entry)
+def edit(request, title):
+    page = util.get_entry(title)
     markdowner = Markdown()
 
     if request.method == "POST":
@@ -103,14 +102,14 @@ def edit(request, entry):
             content = form.cleaned_data["content"]
 
             # Save the entry
-            saved = util.save_entry(entry, content)
+            util.save_entry(title, content)
 
-            return HttpResponseRedirect(reverse("entry", args=[entry]))
+            return HttpResponseRedirect(reverse("entry", kwargs={"title":title}))
 
     # render edit.html
     return render(request, "encyclopedia/edit.html", {
         "form": EditForm(),
-        "entry": entry, 
+        "entry": title, 
         "page": markdowner.convert(page)
     })
 
@@ -118,10 +117,10 @@ def randompg(request):
     markdowner = Markdown()
 
     num = random.randint(0, len(util.list_entries())- 1)
-    entry = util.list_entries()[num]
-    page = util.get_entry(entry)
+    title = util.list_entries()[num]
+    page = util.get_entry(title)
 
     return render(request, "encyclopedia/entry.html", {
         "page": markdowner.convert(page), 
-        "entry": entry
+        "entry": title
     })
