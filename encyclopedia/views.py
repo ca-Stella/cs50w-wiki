@@ -79,7 +79,7 @@ def new(request):
             # Save the entry
             util.save_entry(title, content)
 
-            return HttpResponseRedirect(reverse("entry"), kwargs={"title":title})
+            return HttpResponseRedirect(reverse("entry", kwargs={"title":title}))
 
             
     # render new.html
@@ -109,7 +109,7 @@ def edit(request, title):
     # render edit.html
     return render(request, "encyclopedia/edit.html", {
         "form": EditForm(),
-        "entry": title, 
+        "title": title, 
         "page": markdowner.convert(page)
     })
 
