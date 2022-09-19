@@ -4,6 +4,8 @@
 
 This is a Wiki page created as part of The CS50's Web Programming with Python and JavaScript course.  
 
+[📹 Youtube demo](https://youtu.be/EBpnvLRh1tY)
+
 ## Outcomes
 - Used Django to implement the page
 - Gained a better understanding of how to structure and organize Django projects
