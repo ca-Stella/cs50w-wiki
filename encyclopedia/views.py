@@ -44,9 +44,12 @@ def entry(request, title):
 
 
 def search(request):
+
     search = request.GET.get('q','')
     entries = util.list_entries()
     page = util.get_entry(search)
+
+    # If page does not exist in list of entries, show list of matching results
     if page is None:
         matches = []
         for entry in entries: 
@@ -56,6 +59,8 @@ def search(request):
             "matches": matches,
             "search": search
         })
+
+    # If exact match exists, render that entry page
     else: 
         return HttpResponseRedirect(reverse("entry", kwargs={"title":search}))
 
@@ -81,13 +86,14 @@ def new(request):
 
             return HttpResponseRedirect(reverse("entry", kwargs={"title":title}))
 
-            
+
     # render new.html
     return render(request, "encyclopedia/new.html", {
         "form": NewEntryForm()
     })
 
 def edit(request, title):
+    # Get the information from the entry page
     page = util.get_entry(title)
     markdowner = Markdown()
 
@@ -114,8 +120,9 @@ def edit(request, title):
     })
 
 def randompg(request):
-    markdowner = Markdown()
 
+    # Render random page from list of wiki entries
+    markdowner = Markdown()
     num = random.randint(0, len(util.list_entries())- 1)
     title = util.list_entries()[num]
     page = util.get_entry(title)
